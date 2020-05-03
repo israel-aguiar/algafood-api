@@ -2,13 +2,14 @@ package com.algaworks.algafood.api.controller;
 
 import java.util.List;
 
-import org.apache.tomcat.util.http.ResponseUtil;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -64,5 +65,37 @@ public class CozinhaController {
 		}
 		
 		return ResponseEntity.notFound().build();
+	}
+	
+	@DeleteMapping("/{cozinhaId}")
+	public ResponseEntity<Cozinha> remover(@PathVariable Long cozinhaId) {
+		try {
+			Cozinha cozinha = cozinhaRepository.buscar(cozinhaId);
+			
+			if (cozinha != null) {
+				cozinhaRepository.remover(cozinha);
+				return ResponseEntity.noContent().build();
+			}
+		} catch (DataIntegrityViolationException e) {
+			return ResponseEntity.status(HttpStatus.CONFLICT).build();
+		}
+		
+		return ResponseEntity.notFound().build();
+	}
+	
+	
+	/**
+	 * @param request
+	 * @return
+	 * teste teste teste
+	 */
+	@GetMapping("/url")
+	public String getURLValue(HttpServletRequest request){
+		String msg = "%s: %s\n";
+	    StringBuilder test = new StringBuilder();
+	    test.append(String.format(msg, "request.getScheme()", request.getScheme()));
+	    test.append(String.format(msg, "request.getServerPort()", request.getServerPort()));
+	    test.append(String.format(msg, "request.getContextPath()", request.getContextPath()));
+	    return test.toString();
 	}
 }
