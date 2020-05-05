@@ -14,3 +14,9 @@ insert into cidade (id, nome, estado_id) values (1, 'Vitória da Conquista', 1);
 insert into cidade (id, nome, estado_id) values (2, 'Itambé', 1);
 insert into cidade (id, nome, estado_id) values (3, 'Sorocaba', 2);
 insert into cidade (id, nome, estado_id) values (4, 'Osasco', 2);
+
+insert into forma_pagamento (descricao) values ('À vista');
+insert into forma_pagamento (descricao) values ('À prazo');
+
+insert into permissao (nome, descricao) values ('Administrativa', 'permissão administrativa');
+insert into permissao (nome, descricao) values ('Cliente', 'usuários clientes');

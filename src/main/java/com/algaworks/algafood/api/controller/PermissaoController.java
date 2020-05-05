@@ -19,31 +19,32 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaExeption;
-import com.algaworks.algafood.domain.model.Cidade;
-import com.algaworks.algafood.domain.repository.CidadeRepository;
-import com.algaworks.algafood.domain.service.CadastroCidadeService;
+import com.algaworks.algafood.domain.model.Estado;
+import com.algaworks.algafood.domain.model.Permissao;
+import com.algaworks.algafood.domain.repository.PermissaoRepository;
+import com.algaworks.algafood.domain.service.CadastroPermissaoService;
 
 @RestController
-@RequestMapping("/cidades")
-public class CidadeController {
+@RequestMapping("/permissoes")
+public class PermissaoController {
 
 	@Autowired
-	private CidadeRepository cidadeRepository;
+	private PermissaoRepository permissaoRepository;
 	
 	@Autowired
-	private CadastroCidadeService cadastroCidade;
+	private CadastroPermissaoService cadastroPermissao;
 	
 	@GetMapping
-	public List<Cidade> listar() {
-		return cidadeRepository.findAll();
+	public List<Permissao> listar() {
+		return permissaoRepository.findAll();
 	}
 	
-	@GetMapping("/{cidadeId}")
-	public ResponseEntity<Cidade> buscar(@PathVariable Long cidadeId) {
-		Optional<Cidade> cidade = cidadeRepository.findById(cidadeId);
+	@GetMapping("/{permissaoId}")
+	public ResponseEntity<Permissao> buscar(@PathVariable Long permissaoId) {
+		Optional<Permissao> permissao = permissaoRepository.findById(permissaoId);
 		
-		if (cidade.isPresent()) {
-			return ResponseEntity.ok(cidade.get());
+		if (permissao.isPresent()) {
+			return ResponseEntity.ok(permissao.get());
 		}
 		
 		return ResponseEntity.notFound().build();
@@ -51,28 +52,28 @@ public class CidadeController {
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<?> adicionar(@RequestBody Cidade cidade) {
+	public ResponseEntity<?> adicionar(@RequestBody Permissao permissao) {
 		try {
-			cidade = cadastroCidade.salvar(cidade);
+			permissao = cadastroPermissao.salvar(permissao);
 			return ResponseEntity.status(HttpStatus.CREATED)
-					.body(cidade);
+					.body(permissao);
 		} catch (EntidadeNaoEncontradaExeption e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
 	}
 	
 	
-	@PutMapping("/{cidadeId}")
-	public ResponseEntity<?> atualizar(@PathVariable Long cidadeId,
-			@RequestBody Cidade cidade) {
+	@PutMapping("/{permissaoId}")
+	public ResponseEntity<?> atualizar(@PathVariable Long permissaoId,
+			@RequestBody Permissao permissao) {
 		try {
-			Optional<Cidade> cidadeAtualOptional = cidadeRepository.findById(cidadeId);
+			Optional<Permissao> permissaoAtualOptional = permissaoRepository.findById(permissaoId);
 			
-			if (cidadeAtualOptional.isPresent()) {
-				Cidade cidadeAtual = cidadeAtualOptional.get();
-				BeanUtils.copyProperties(cidade, cidadeAtual, "id");
-				cidadeAtual = cadastroCidade.salvar(cidadeAtual);
-				return ResponseEntity.ok(cidadeAtual);
+			if (permissaoAtualOptional.isPresent()) {
+				Permissao permissaoAtual = permissaoAtualOptional.get();
+				BeanUtils.copyProperties(permissao, permissaoAtual, "id");
+				Permissao permissaoSalvo = cadastroPermissao.salvar(permissaoAtual);
+				return ResponseEntity.ok(permissaoSalvo);
 			}
 			
 			return ResponseEntity.notFound().build();
@@ -81,10 +82,10 @@ public class CidadeController {
 		}
 	}
 	
-	@DeleteMapping("/{cidadeId}")
-	public ResponseEntity<Cidade> remover(@PathVariable Long cidadeId) {
+	@DeleteMapping("/{permissaoId}")
+	public ResponseEntity<Estado> remover(@PathVariable Long permissaoId) {
 		try {
-			cadastroCidade.excluir(cidadeId);
+			cadastroPermissao.excluir(permissaoId);
 			return ResponseEntity.noContent().build();
 		
 		} catch (EntidadeNaoEncontradaExeption e) {
