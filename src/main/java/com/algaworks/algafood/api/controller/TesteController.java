@@ -1,5 +1,6 @@
 package com.algaworks.algafood.api.controller;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,12 @@ public class TesteController {
 
 	@GetMapping("/restaurantes/por-nome")
 	public List<Restaurante> restaurantePorNome(String nome, Long cozinhaId) {
-		return restauranteRepository.consultaPorNome(nome, cozinhaId);
+		return restauranteRepository.consultarPorNome(nome, cozinhaId);
+	}
+
+	@GetMapping("/restaurantes/por-nome-e-frete")
+	public List<Restaurante> restaurantePorNome(String nome, BigDecimal taxaFreteInicial, BigDecimal taxaFreteFinal ) {
+		return restauranteRepository.find(nome, taxaFreteInicial, taxaFreteFinal);
 	}
 
 }
