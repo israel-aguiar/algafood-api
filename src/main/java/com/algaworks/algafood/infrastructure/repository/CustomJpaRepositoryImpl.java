@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
+import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaExeption;
 import com.algaworks.algafood.domain.repository.CustomJpaRepository;
 
 public class CustomJpaRepositoryImpl<T, ID> extends SimpleJpaRepository<T, ID>
@@ -30,6 +31,14 @@ public class CustomJpaRepositoryImpl<T, ID> extends SimpleJpaRepository<T, ID>
 		
 		
 		return Optional.ofNullable(entity);
+	}
+
+	@Override
+	public T buscarOuFalhar(ID id)
+			throws EntidadeNaoEncontradaExeption {
+		
+		return findById(id).orElseThrow(() -> new EntidadeNaoEncontradaExeption(
+				String.format("Não existe um cadastro de %s com código %s", getDomainClass().getName(), id)));
 	}
 
 }

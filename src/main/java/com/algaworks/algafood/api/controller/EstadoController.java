@@ -1,7 +1,6 @@
 package com.algaworks.algafood.api.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,14 +39,8 @@ public class EstadoController {
 	
 	
 	@GetMapping("/{estadoId}")
-	public ResponseEntity<Estado> buscar(@PathVariable Long estadoId) {
-		Optional<Estado> estado = estadoRepository.findById(estadoId);
-		
-		if (estado.isPresent()) {
-			return ResponseEntity.ok(estado.get());
-		}
-		
-		return ResponseEntity.notFound().build();
+	public Estado buscar(@PathVariable Long estadoId) {
+		return estadoRepository.buscarOuFalhar(estadoId);
 	}
 	
 	@PostMapping
@@ -60,18 +53,11 @@ public class EstadoController {
 	}
 	
 	@PutMapping("/{estadoId}")
-	public ResponseEntity<Estado> atualizar(@PathVariable Long estadoId,
+	public Estado atualizar(@PathVariable Long estadoId,
 			@RequestBody Estado cozinha) {
-		Optional<Estado> estadoAtualOptional = estadoRepository.findById(estadoId);
-		
-		if (estadoAtualOptional.isPresent()) {
-			Estado estadoAtual = estadoAtualOptional.get();
-			BeanUtils.copyProperties(cozinha, estadoAtual, "id");
-			estadoAtual = cadastroEstado.salvar(estadoAtual);
-			return ResponseEntity.ok(estadoAtual);
-		}
-		
-		return ResponseEntity.notFound().build();
+		Estado estadoAtual = estadoRepository.buscarOuFalhar(estadoId);
+		BeanUtils.copyProperties(cozinha, estadoAtual, "id");
+		return cadastroEstado.salvar(estadoAtual);
 	}
 	
 	@DeleteMapping("/{estadoId}")

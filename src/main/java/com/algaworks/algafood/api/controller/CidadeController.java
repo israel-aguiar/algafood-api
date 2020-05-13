@@ -1,7 +1,6 @@
 package com.algaworks.algafood.api.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,14 +38,8 @@ public class CidadeController {
 	}
 	
 	@GetMapping("/{cidadeId}")
-	public ResponseEntity<Cidade> buscar(@PathVariable Long cidadeId) {
-		Optional<Cidade> cidade = cidadeRepository.findById(cidadeId);
-		
-		if (cidade.isPresent()) {
-			return ResponseEntity.ok(cidade.get());
-		}
-		
-		return ResponseEntity.notFound().build();
+	public Cidade buscar(@PathVariable Long cidadeId) {
+		return cadastroCidade.buscarOuFalhar(cidadeId);
 	}
 	
 	@PostMapping
@@ -63,22 +56,11 @@ public class CidadeController {
 	
 	
 	@PutMapping("/{cidadeId}")
-	public ResponseEntity<?> atualizar(@PathVariable Long cidadeId,
+	public Cidade atualizar(@PathVariable Long cidadeId,
 			@RequestBody Cidade cidade) {
-		try {
-			Optional<Cidade> cidadeAtualOptional = cidadeRepository.findById(cidadeId);
-			
-			if (cidadeAtualOptional.isPresent()) {
-				Cidade cidadeAtual = cidadeAtualOptional.get();
-				BeanUtils.copyProperties(cidade, cidadeAtual, "id");
-				cidadeAtual = cadastroCidade.salvar(cidadeAtual);
-				return ResponseEntity.ok(cidadeAtual);
-			}
-			
-			return ResponseEntity.notFound().build();
-		} catch (EntidadeNaoEncontradaExeption e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-		}
+		Cidade cidadeAtual = cadastroCidade.buscarOuFalhar(cidadeId);
+		BeanUtils.copyProperties(cidade, cidadeAtual, "id");
+		return cadastroCidade.salvar(cidadeAtual);
 	}
 	
 	@DeleteMapping("/{cidadeId}")
