@@ -10,7 +10,6 @@ import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaExeption;
 import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.model.Estado;
 import com.algaworks.algafood.domain.repository.CidadeRepository;
-import com.algaworks.algafood.domain.repository.EstadoRepository;
 
 @Service
 public class CadastroCidadeService {
@@ -23,12 +22,12 @@ public class CadastroCidadeService {
 	private CidadeRepository cidadeRepository;
 	
 	@Autowired
-	private EstadoRepository estadoRepository;
+	private CadastroEstadoService cadastroEstado;
 	
 	public Cidade salvar(Cidade cidade) {
 		Long estadoId = cidade.getEstado().getId();
-//		Estado estado = cadastroEstado.buscarOuFalhar(estadoId);
-		Estado estado = estadoRepository.buscarOuFalhar(estadoId);
+		Estado estado = cadastroEstado.buscarOuFalhar(estadoId);
+//		Estado estado = estadoRepository.buscarOuFalhar(estadoId);
 		cidade.setEstado(estado);
 		return cidadeRepository.save(cidade);
 	}
