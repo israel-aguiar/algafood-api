@@ -6,7 +6,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
-import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaExeption;
+import com.algaworks.algafood.domain.exception.FormaPagamentoNaoEncontradaExeption;
 import com.algaworks.algafood.domain.model.FormaPagamento;
 import com.algaworks.algafood.domain.repository.FormaPagamentoRepository;
 
@@ -24,13 +24,17 @@ public class CadastroFormaPagamentoService {
 		try {
 			formaPagamentoRepository.deleteById(formaPagamentoId);
 		} catch (EmptyResultDataAccessException e) {
-			throw new EntidadeNaoEncontradaExeption(
-					String.format("Não existe um cadastro de formaPagamento com código %s", formaPagamentoId));
+			throw new FormaPagamentoNaoEncontradaExeption(formaPagamentoId);
 		}
 		catch (DataIntegrityViolationException e) {
 			throw new EntidadeEmUsoException(
 					String.format("FormaPagamento de código %d não pode ser removida, pois está em uso", formaPagamentoId));
 		}
+	}
+
+	public FormaPagamento buscarOuFalhar(Long formaPagamentoId) {
+		return formaPagamentoRepository.findById(formaPagamentoId)
+				.orElseThrow( () -> new FormaPagamentoNaoEncontradaExeption(formaPagamentoId));
 	}
 
 }
