@@ -1,4 +1,4 @@
-package com.algaworks.algafood.api;
+package com.algaworks.algafood.api.exceptionhandler;
 
 import java.time.LocalDateTime;
 
