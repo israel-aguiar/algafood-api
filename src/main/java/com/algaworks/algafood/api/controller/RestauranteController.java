@@ -49,6 +49,7 @@ public class RestauranteController {
 	
 	@GetMapping("/{restauranteId}")
 	public Restaurante buscar(@PathVariable Long restauranteId) {
+//		if (true) throw new IllegalAccessError("teste"); testar tratamento de exceptions gerais
 		return cadastroRestaurante.buscarOuFalhar(restauranteId);
 	}
 	

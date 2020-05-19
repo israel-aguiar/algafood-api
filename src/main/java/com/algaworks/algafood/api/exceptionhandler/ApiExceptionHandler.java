@@ -83,6 +83,24 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 				status, request);
 	}
 	
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<?> handleUncaught(Exception ex, WebRequest request) {
+		
+		HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+		
+		ProblemType problemType = ProblemType.ERRO_DE_SISTEMA;
+		
+		String detail = "Ocorreu um erro inesperado no sistema. Tente novamente se o "
+				+ "problema persistir, entre em contato com o administrador.";
+			
+		ex.printStackTrace();
+		
+		Problem problem = createProblemBuilder(status, problemType, detail).build();
+		
+		return handleExceptionInternal(ex, problem, new HttpHeaders(),
+				status, request);
+	}
+	
 	@ExceptionHandler(NegocioExeption.class)
 	public ResponseEntity<?> handleNegocio(NegocioExeption ex, WebRequest request) {
 
