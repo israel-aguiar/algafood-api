@@ -12,7 +12,7 @@ import javax.validation.Payload;
 @Target({ ElementType.TYPE })
 @Retention(RUNTIME)
 @Constraint(validatedBy = { ValorZeroIncluirDescricaoValidator.class })
-public @interface ValorZeroIncluirDescricao {
+public @interface ValorZeroIncluiDescricao {
 
 	String message() default "descrição obrigatória inválida";
 

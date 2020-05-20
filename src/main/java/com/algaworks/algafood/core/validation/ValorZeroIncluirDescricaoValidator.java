@@ -8,14 +8,14 @@ import javax.validation.ValidationException;
 
 import org.springframework.beans.BeanUtils;
 
-public class ValorZeroIncluirDescricaoValidator implements ConstraintValidator<ValorZeroIncluirDescricao, Object> {
+public class ValorZeroIncluirDescricaoValidator implements ConstraintValidator<ValorZeroIncluiDescricao, Object> {
 
 	private String valorField;
 	private String descricaoField;
 	private String descricaoObrigatoria;
 	
 	@Override
-	public void initialize(ValorZeroIncluirDescricao constraintAnnotation) {
+	public void initialize(ValorZeroIncluiDescricao constraintAnnotation) {
 		valorField = constraintAnnotation.valorField();
 		descricaoField = constraintAnnotation.descricaoField();
 		descricaoObrigatoria = constraintAnnotation.descricaoObrigatoria();
