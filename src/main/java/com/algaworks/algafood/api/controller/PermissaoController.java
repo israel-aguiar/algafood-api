@@ -2,6 +2,8 @@ package com.algaworks.algafood.api.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,14 +43,14 @@ public class PermissaoController {
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Permissao adicionar(@RequestBody Permissao permissao) {
+	public Permissao adicionar(@RequestBody @Valid Permissao permissao) {
 		return cadastroPermissao.salvar(permissao);
 	}
 	
 	
 	@PutMapping("/{permissaoId}")
 	public Permissao atualizar(@PathVariable Long permissaoId,
-			@RequestBody Permissao permissao) {
+			@RequestBody @Valid Permissao permissao) {
 		Permissao permissaoAtual = cadastroPermissao.buscarOuFalhar(permissaoId);
 		BeanUtils.copyProperties(permissao, permissaoAtual, "id");
 		return cadastroPermissao.salvar(permissaoAtual);
