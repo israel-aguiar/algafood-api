@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.algaworks.algafood.domain.exception.CozinhaNaoEncontradaExeption;
+import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.service.CadastroCozinhaService;
 
@@ -44,5 +46,23 @@ public class CadastroCozinhaIntegrationTests {
 		// ação
 		novaCozinha = cadastroCozinha.salvar(novaCozinha);
 	}
+	
+	@Test(expected = EntidadeEmUsoException.class)
+	public void deveFalhar_QuandoExcluirCozinhaEmUso() {
+		// cenário
+		Long cozinhaId = 1L;
+		
+		// ação
+		cadastroCozinha.excluir(cozinhaId);
+		
+	}
+	
+	@Test(expected = CozinhaNaoEncontradaExeption.class)
+	public void deveFalhar_QuandoExcluirCozinhaInexistente() {
+		// cenário
+		Long cozinhaId = 100l;
+		
+		// ação
+		cadastroCozinha.excluir(cozinhaId);	}
 	
 }
