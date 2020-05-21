@@ -1,68 +1,36 @@
 package com.algaworks.algafood;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import javax.validation.ConstraintViolationException;
+import static io.restassured.RestAssured.given;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.algaworks.algafood.domain.exception.CozinhaNaoEncontradaExeption;
-import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
-import com.algaworks.algafood.domain.model.Cozinha;
-import com.algaworks.algafood.domain.service.CadastroCozinhaService;
+import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class CadastroCozinhaIT {
 	
-	@Autowired
-	CadastroCozinhaService cadastroCozinha;
-
+	@LocalServerPort
+	private int port;
+	
 	@Test
-	public void deveAtribuirId_QuandoCadastrarCozinhaComDadosCorretos() {
-		// cenário
-		Cozinha novaCozinha = new Cozinha();
-		novaCozinha.setNome("Chinesa");
+	public void deveRetornarStatus200_QuandoConsultarCozinhas() {
+		RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
 		
-		
-		// ação
-		novaCozinha = cadastroCozinha.salvar(novaCozinha);
-		
-		// validação
-		assertThat(novaCozinha).isNotNull();
-		assertThat(novaCozinha.getId()).isNotNull();
+		given()
+			.basePath("/cozinhas")
+			.port(port)
+			.accept(ContentType.JSON)
+		.when()
+			.get()
+		.then()
+			.statusCode(HttpStatus.OK.value());//200
 	}
-	
-	@Test(expected = ConstraintViolationException.class)
-	public void deveFalhar_QuandoCadastrarCozinhaSemNome() {
-		// cenário
-		Cozinha novaCozinha = new Cozinha();
-		novaCozinha.setNome(null);
-		
-		// ação
-		novaCozinha = cadastroCozinha.salvar(novaCozinha);
-	}
-	
-	@Test(expected = EntidadeEmUsoException.class)
-	public void deveFalhar_QuandoExcluirCozinhaEmUso() {
-		// cenário
-		Long cozinhaId = 1L;
-		
-		// ação
-		cadastroCozinha.excluir(cozinhaId);
-		
-	}
-	
-	@Test(expected = CozinhaNaoEncontradaExeption.class)
-	public void deveFalhar_QuandoExcluirCozinhaInexistente() {
-		// cenário
-		Long cozinhaId = 100l;
-		
-		// ação
-		cadastroCozinha.excluir(cozinhaId);	}
 	
 }
