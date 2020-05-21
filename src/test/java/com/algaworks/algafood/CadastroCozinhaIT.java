@@ -1,5 +1,7 @@
 package com.algaworks.algafood;
 
+import java.math.BigDecimal;
+
 import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,6 +47,22 @@ public class CadastroCozinhaIT {
 		.then()
 			.body("", Matchers.hasSize(4))
 			.body("nome", Matchers.hasItems("Indiana", "Tailandesa"));
-	}
+	}	
+	
+//	@Test
+//	public void deveConter6Restaurantes_QuandoConsultarRestaurantes() {
+//		RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
+//		
+//		RestAssured.given()
+//			.basePath("/restaurantes")
+//			.port(port)
+//			.accept(ContentType.JSON)
+//		.when()
+//			.get()
+//		.then()
+//			.body("", Matchers.hasSize(6))
+//			.body("taxaFrete", Matchers.greaterThanOrEqualTo(0))
+//			;
+//	}
 	
 }
