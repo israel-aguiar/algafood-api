@@ -13,6 +13,4 @@ public class ValidacaoException extends RuntimeException {
 	
 	private BindingResult bindingResult;
 	
-	
-
 }
