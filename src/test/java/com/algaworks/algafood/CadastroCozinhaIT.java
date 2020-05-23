@@ -1,5 +1,7 @@
 package com.algaworks.algafood;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import org.hamcrest.Matchers;
@@ -14,7 +16,9 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.algaworks.algafood.domain.model.Cozinha;
+import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
+import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import com.algaworks.algafood.util.DatabaseCleaner;
 import com.algaworks.algafood.util.ResourceUtils;
 
@@ -46,6 +50,9 @@ public class CadastroCozinhaIT {
 	@Autowired
 	private CozinhaRepository cozinhaRepository;
 	
+	@Autowired
+	private RestauranteRepository restauranteRepository;
+	
 	@Before
 	public void setUp() {
 		RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
@@ -70,8 +77,6 @@ public class CadastroCozinhaIT {
 	
 	@Test
 	public void deveRetornarQuantidadeCorretaDeCozinhas_QuandoConsultarCozinhas() {
-		RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
-		
 		RestAssured.given()
 			.accept(ContentType.JSON)
 		.when()
@@ -116,12 +121,27 @@ public class CadastroCozinhaIT {
 			.statusCode(HttpStatus.NOT_FOUND.value());
 	}
 	
+	@Test
+	public void deveRetornarSTatus409_QuandoCozinhaEmUso() {
+		RestAssured.given()
+			.pathParam("cozinhaId", 2)
+			.accept(ContentType.JSON)
+		.when()
+			.delete("/{cozinhaId}")
+		.then()
+			.statusCode(HttpStatus.CONFLICT.value());
+		
+	}
+	
 	private void prepararDados() {
 		cozinhaAmericana = criarCozinha("Americana");
 		ArrayList<Cozinha> cozinhas = new ArrayList<>();
 		cozinhas.add(criarCozinha("Tailandesa"));
 		cozinhas.add(cozinhaAmericana);
 		cozinhas.forEach(cozinha ->	cozinhaRepository.save(cozinha));
+		
+		Restaurante restaurante = criarRestaurante("bbb", "12.5", cozinhaAmericana);
+		restauranteRepository.save(restaurante);
 		
 		quantidadeCozinhasCadastradas = cozinhas.size();
 	}
@@ -130,6 +150,22 @@ public class CadastroCozinhaIT {
 		Cozinha cozinha = new Cozinha();
 		cozinha.setNome(nome);
 		return cozinha;
+	}
+	
+	private Restaurante criarRestaurante(String nome, String taxaFrete,
+			Cozinha cozinha) {
+		
+		LocalDateTime agora = LocalDateTime.now();
+		
+		Restaurante restaurante = new Restaurante();
+		restaurante.setNome(nome);
+		restaurante.setTaxaFrete(new BigDecimal(taxaFrete));
+		restaurante.setCozinha(cozinha);
+		restaurante.setDataCadastro(agora);
+		restaurante.setDataAtualizacao(agora);
+		
+		
+		return restaurante;
 	}
 	
 //	@Test

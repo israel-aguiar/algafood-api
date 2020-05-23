@@ -1,0 +1,25 @@
+[
+	{
+	    "nome": "",
+	    "taxaFrete": 12.00,
+	    "cozinha": {
+	        "id": 1
+	    }
+	},
+
+	{
+	    "nome": "Comida Mineira",
+	    "taxaFrete": -12.00,
+	    "cozinha": {
+	        "id": 1
+	    }
+	},
+
+	{
+	    "nome": "Comida Mineira",
+	    "taxaFrete": -12.00,
+	    "cozinha": {
+	        "id": null
+	    }
+	}
+]
