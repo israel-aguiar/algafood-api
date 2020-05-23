@@ -1,5 +1,7 @@
 package com.algaworks.algafood.domain.service;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -16,10 +18,12 @@ public class CadastroPermissaoService {
 	@Autowired
 	private PermissaoRepository permissaoRepository;
 	
+	@Transactional
 	public Permissao salvar(Permissao permissao) {
 		return permissaoRepository.save(permissao);
 	}
 	
+	@Transactional
 	public void excluir(Long permissaoId) {
 		try {
 			permissaoRepository.deleteById(permissaoId);
@@ -32,6 +36,7 @@ public class CadastroPermissaoService {
 		}
 	}
 
+	@Transactional
 	public Permissao buscarOuFalhar(Long permissaoId) {
 		return permissaoRepository.findById(permissaoId)
 				.orElseThrow( () -> new PermissaoNaoEncontradaExeption(permissaoId));

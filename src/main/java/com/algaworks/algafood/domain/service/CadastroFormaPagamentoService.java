@@ -1,5 +1,7 @@
 package com.algaworks.algafood.domain.service;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -16,10 +18,12 @@ public class CadastroFormaPagamentoService {
 	@Autowired
 	private FormaPagamentoRepository formaPagamentoRepository;
 	
+	@Transactional
 	public FormaPagamento salvar(FormaPagamento formaPagamento) {
 		return formaPagamentoRepository.save(formaPagamento);
 	}
 	
+	@Transactional
 	public void excluir(Long formaPagamentoId) {
 		try {
 			formaPagamentoRepository.deleteById(formaPagamentoId);
@@ -32,6 +36,7 @@ public class CadastroFormaPagamentoService {
 		}
 	}
 
+	@Transactional
 	public FormaPagamento buscarOuFalhar(Long formaPagamentoId) {
 		return formaPagamentoRepository.findById(formaPagamentoId)
 				.orElseThrow( () -> new FormaPagamentoNaoEncontradaExeption(formaPagamentoId));
