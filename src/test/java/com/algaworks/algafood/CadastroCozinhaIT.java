@@ -1,7 +1,6 @@
 package com.algaworks.algafood;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import org.hamcrest.Matchers;
@@ -155,14 +154,14 @@ public class CadastroCozinhaIT {
 	private Restaurante criarRestaurante(String nome, String taxaFrete,
 			Cozinha cozinha) {
 		
-		LocalDateTime agora = LocalDateTime.now();
+//		OffsetDateTime agora = OffsetDateTime.now();
 		
 		Restaurante restaurante = new Restaurante();
 		restaurante.setNome(nome);
 		restaurante.setTaxaFrete(new BigDecimal(taxaFrete));
 		restaurante.setCozinha(cozinha);
-		restaurante.setDataCadastro(agora);
-		restaurante.setDataAtualizacao(agora);
+//		restaurante.setDataCadastro(agora);
+//		restaurante.setDataAtualizacao(agora);
 		
 		
 		return restaurante;
