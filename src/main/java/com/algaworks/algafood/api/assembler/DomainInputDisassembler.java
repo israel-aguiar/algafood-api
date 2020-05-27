@@ -34,7 +34,11 @@ public abstract class DomainInputDisassembler<D, I> {
 		
 	}
 	
-	public D toDomainObject(I domainModel) {
-		return modelMapper.map(domainModel, getDomainClass());
+	public D toDomainObject(I input) {
+		return modelMapper.map(input, getDomainClass());
+	}
+	
+	public void copyToDomainObject(I input, D domain) {
+		modelMapper.map(input, domain);
 	}
 }
