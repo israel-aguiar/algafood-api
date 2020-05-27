@@ -33,7 +33,7 @@ public class CadastroRestauranteService {
 		return restauranteRepository.save(restaurante);
 	}
 	
-	@Transactional
+//	@Transactional
 	public void excluir(Long restauranteId) {
 		try {
 			restauranteRepository.deleteById(restauranteId);
