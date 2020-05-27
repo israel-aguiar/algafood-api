@@ -121,7 +121,7 @@ public class CadastroCozinhaIT {
 	}
 	
 	@Test
-	public void deveRetornarSTatus409_QuandoCozinhaEmUso() {
+	public void deveRetornarStatus409_QuandoTentarRemoverCozinhaEmUso() {
 		RestAssured.given()
 			.pathParam("cozinhaId", 2)
 			.accept(ContentType.JSON)
