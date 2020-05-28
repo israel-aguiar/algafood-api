@@ -1,4 +1,4 @@
-package com.algaworks.algafood.api.assembler;
+package com.algaworks.algafood.api.assembler.generic;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
@@ -13,7 +13,7 @@ import lombok.Getter;
 @Getter
 public abstract class DomainAssembler<D, M> {
 
-	private Class<D> entityClass;
+	private Class<D> domainClass;
 	private Class<M> modelClass;
 	
 	@Getter(value = AccessLevel.PRIVATE)
@@ -22,7 +22,7 @@ public abstract class DomainAssembler<D, M> {
 	
 	@SuppressWarnings("unchecked")
 	public DomainAssembler() {
-		this.entityClass = (Class<D>) ((ParameterizedType) getClass()
+		this.domainClass = (Class<D>) ((ParameterizedType) getClass()
                 .getGenericSuperclass()).getActualTypeArguments()[0];
 		
 		this.modelClass = (Class<M>) ((ParameterizedType) getClass()

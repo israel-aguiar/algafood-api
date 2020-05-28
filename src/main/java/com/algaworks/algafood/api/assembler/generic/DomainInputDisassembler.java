@@ -1,11 +1,10 @@
-package com.algaworks.algafood.api.assembler;
+package com.algaworks.algafood.api.assembler.generic;
 
 import java.lang.reflect.ParameterizedType;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import lombok.AccessLevel;
 import lombok.Getter;
 
 /**
@@ -18,9 +17,8 @@ import lombok.Getter;
 public abstract class DomainInputDisassembler<D, I> {
 
 	private Class<D> domainClass;
-	private Class<I> modelClass;
+	private Class<I> inputClass;
 	
-	@Getter(value = AccessLevel.PRIVATE)
 	@Autowired
 	private ModelMapper modelMapper;
 	
@@ -29,7 +27,7 @@ public abstract class DomainInputDisassembler<D, I> {
 		this.domainClass = (Class<D>) ((ParameterizedType) getClass()
                 .getGenericSuperclass()).getActualTypeArguments()[0];
 		
-		this.modelClass = (Class<I>) ((ParameterizedType) getClass()
+		this.inputClass = (Class<I>) ((ParameterizedType) getClass()
                 .getGenericSuperclass()).getActualTypeArguments()[1];
 		
 	}
@@ -39,6 +37,7 @@ public abstract class DomainInputDisassembler<D, I> {
 	}
 	
 	public void copyToDomainObject(I input, D domain) {
+		EntityUtil.resetEntityFields(inputClass, domain);
 		modelMapper.map(input, domain);
 	}
 }
