@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import lombok.AccessLevel;
 import lombok.Getter;
 
 @Getter
@@ -16,7 +15,6 @@ public abstract class DomainAssembler<D, M> {
 	private Class<D> domainClass;
 	private Class<M> modelClass;
 	
-	@Getter(value = AccessLevel.PRIVATE)
 	@Autowired
 	private ModelMapper modelMapper;
 	
