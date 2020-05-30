@@ -8,7 +8,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
-import java.util.Optional;
 
 import javax.persistence.Embeddable;
 import javax.persistence.Entity;
@@ -22,7 +21,7 @@ import com.algaworks.algafood.domain.model.Endereco;
 import com.algaworks.algafood.domain.model.Estado;
 import com.algaworks.algafood.domain.model.Restaurante;
 
-public class EntityUtil {
+public class ModelMapperUtil {
 	
 	public static void resetEntityFields(Class<?> modelClass, Object object ) {
 		try {
@@ -52,7 +51,7 @@ public class EntityUtil {
 							resetEntityField(propertyDescriptorObject, object);
 	//						System.out.printf("name: %s\n", field.getName());
 						} else if (isEmbeddable) {
-							Class<?> classFieldModel = propertyDescriptorModel.getReadMethod().getDeclaringClass();
+							Class<?> classFieldModel = propertyDescriptorModel.getReadMethod().getReturnType();
 							resetEntityFields(classFieldModel, fieldValue);//recursao: possibilidade de loop infinito
 						}
 					}
@@ -63,48 +62,6 @@ public class EntityUtil {
 			// TODO Trabalhar esta exception
 			throw new RuntimeException(e);
 		}
-	}
-	
-	public static void resetEntityFields(Object object0) {
-		
-		try {
-			Class<?> clazz = object0.getClass();
-			BeanInfo beanInfo = Introspector.getBeanInfo(clazz);
-			PropertyDescriptor[] props = beanInfo.getPropertyDescriptors();
-			
-			for (PropertyDescriptor pd : props) {
-				String name = pd.getName();
-				Optional<Field> fieldOptional = 
-						Optional.ofNullable(ReflectionUtils.findField(object0.getClass(), name));
-				
-				fieldOptional.ifPresent(field -> {
-					Class<?> fieldClazz = field.getType();
-//					System.out.printf("fieldClazz: %s\n", fieldClazz);
-					
-					//verificar anotações possíveis do JPA
-					boolean isEntity = fieldClazz.isAnnotationPresent(Entity.class);
-					boolean isEmbeddable = fieldClazz.isAnnotationPresent(Embeddable.class);;
-					
-					//verificar anotações possíveis do JPA
-					if(isEntity) {
-						resetEntityField(pd, object0);
-//						System.out.printf("name: %s\n", field.getName());
-						
-					} else if (isEmbeddable) {//Endereco é um Embeddable
-						Method methodGet = pd.getReadMethod();
-						Object objectEmbeddable = ReflectionUtils.invokeMethod(methodGet, object0);
-						if (objectEmbeddable != null)
-							resetEntityFields(objectEmbeddable); //recursao: possibilidade de loop infinito
-					}
-				});
-			}
-			
-			
-		} catch (IntrospectionException e) {
-			// TODO Trabalhar esta exception
-			throw new RuntimeException();
-		}
-		
 	}
 	
 	private static void resetEntityField(PropertyDescriptor property, Object object0) {
@@ -152,7 +109,7 @@ public class EntityUtil {
 		System.out.printf("cidade antes: %s\n", restaurante.getEndereco().getCidade().getNome());
 		
 //		EntityUtil.resetEntityFields(restaurante);
-		EntityUtil.resetEntityFields(RestauranteInput.class, restaurante);
+		ModelMapperUtil.resetEntityFields(RestauranteInput.class, restaurante);
 		
 		System.out.printf("cozinha depois: %s\n", restaurante.getCozinha().getNome());
 		System.out.printf("cidade depois: %s\n", restaurante.getEndereco().getCidade().getNome());

@@ -37,7 +37,7 @@ public abstract class DomainInputDisassembler<D, I> {
 	}
 	
 	public void copyToDomainObject(I input, D domain) {
-		EntityUtil.resetEntityFields(inputClass, domain);
+		ModelMapperUtil.resetEntityFields(inputClass, domain);
 		modelMapper.map(input, domain);
 	}
 }
