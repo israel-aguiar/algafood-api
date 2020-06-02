@@ -1,6 +1,7 @@
 package com.algaworks.algafood.api.assembler.generic;
 
 import java.lang.reflect.ParameterizedType;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,7 +33,7 @@ public abstract class DomainAssembler<D, M> {
 		return modelMapper.map(entity, getModelClass());
 	}
 	
-	public List<M> toCollectionModel(List<D> entities) {
+	public List<M> toCollectionModel(Collection<D> entities) {
 		return entities.stream()
 				.map(entity -> toModel(entity))
 				.collect(Collectors.toList());
