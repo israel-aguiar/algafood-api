@@ -87,10 +87,20 @@ public class CadastroRestauranteService {
 		
 		restaurante.adicionarFormaPagamento(formaPagamento);
 	}
+
+	@Transactional
+	public void abrir(Long restauranteId) {
+		buscarOuFalhar(restauranteId).abrir();
+	}
+	
+	@Transactional
+	public void fechar(Long restauranteId) {
+		buscarOuFalhar(restauranteId).fechar();
+	}
 	
 	public Restaurante buscarOuFalhar(Long restauranteId) {
 		return restauranteRepository.findById(restauranteId)
 				.orElseThrow(() -> new RestauranteNaoEncontradoExeption(restauranteId));
 	}
-	
+
 }
