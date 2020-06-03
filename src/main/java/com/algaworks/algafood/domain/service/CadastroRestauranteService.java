@@ -54,8 +54,7 @@ public class CadastroRestauranteService {
 			restauranteRepository.flush();
 		} catch (EmptyResultDataAccessException e) {
 			throw new RestauranteNaoEncontradoExeption(restauranteId);
-		}
-		catch (DataIntegrityViolationException e) {
+		} catch (DataIntegrityViolationException e) {
 			throw new EntidadeEmUsoException(
 					String.format(RESTAURANTE_EM_USO, restauranteId));
 		}
