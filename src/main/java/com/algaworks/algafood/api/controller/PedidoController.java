@@ -21,7 +21,7 @@ import com.algaworks.algafood.api.model.PedidoModel;
 import com.algaworks.algafood.api.model.PedidoResumoModel;
 import com.algaworks.algafood.api.model.input.PedidoInput;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaExeption;
-import com.algaworks.algafood.domain.exception.NegocioExeption;
+import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.model.Pedido;
 import com.algaworks.algafood.domain.model.Usuario;
 import com.algaworks.algafood.domain.repository.PedidoRepository;
@@ -71,7 +71,7 @@ public class PedidoController {
 		
 			return pedidoModelAssembler.toModel(novoPedido);
 		} catch (EntidadeNaoEncontradaExeption e) {
-			throw new NegocioExeption(e.getMessage(), e);
+			throw new NegocioException(e.getMessage(), e);
 		}
 		
 	}

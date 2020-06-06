@@ -10,7 +10,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
-import com.algaworks.algafood.domain.exception.NegocioExeption;
+import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.exception.UsuarioNaoEncontradoExeption;
 import com.algaworks.algafood.domain.model.Grupo;
 import com.algaworks.algafood.domain.model.Usuario;
@@ -35,7 +35,7 @@ public class CadastroUsuarioService {
 		Optional<Usuario> usuarioExistente = usuarioRepository.findByEmail(usuario.getEmail());
 		
 		if(usuarioExistente.isPresent() && !usuarioExistente.get().equals(usuario)) {
-			throw new NegocioExeption(
+			throw new NegocioException(
 					String.format("Já existe um usuário cadastrado com o e-mail %s", usuario.getEmail()));
 		}
 		
@@ -67,7 +67,7 @@ public class CadastroUsuarioService {
 		Usuario usuario = buscarOuFalhar(usuarioId);
 		
 		if(usuario.senhaNaoCoincideCom(senhaAtual)) {
-			throw new NegocioExeption("Senha atual informada não coincide com a senha do usuário.");
+			throw new NegocioException("Senha atual informada não coincide com a senha do usuário.");
 		}
 		
 		usuario.setSenha(novaSenha);

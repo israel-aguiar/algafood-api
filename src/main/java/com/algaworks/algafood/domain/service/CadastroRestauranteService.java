@@ -10,7 +10,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
-import com.algaworks.algafood.domain.exception.NegocioExeption;
+import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.exception.RestauranteNaoEncontradoExeption;
 import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.model.Cozinha;
@@ -117,7 +117,7 @@ public class CadastroRestauranteService {
 		try {
 			restauranteIds.forEach(this::ativar);
 		} catch (RestauranteNaoEncontradoExeption e) {
-			throw new NegocioExeption(e.getMessage(), e);
+			throw new NegocioException(e.getMessage(), e);
 		}
 	}
 
@@ -126,7 +126,7 @@ public class CadastroRestauranteService {
 		try {
 			restauranteIds.forEach(this::inativar);
 		} catch (RestauranteNaoEncontradoExeption e) {
-			throw new NegocioExeption(e.getMessage(), e);
+			throw new NegocioException(e.getMessage(), e);
 		}
 	}
 
