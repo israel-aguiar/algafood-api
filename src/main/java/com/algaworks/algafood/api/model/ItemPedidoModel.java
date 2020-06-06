@@ -10,7 +10,7 @@ import lombok.Setter;
 public class ItemPedidoModel {
 	
 	private Long id;
-	private String pedidoNome;
+	private String produtoNome;
 	private Integer quantidade;
 	private BigDecimal precoUnitario;
 	private BigDecimal precoTotal;
