@@ -12,38 +12,38 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.algaworks.algafood.api.assembler.FormaPagamentoModelAssembler;
-import com.algaworks.algafood.api.model.FormaPagamentoModel;
+import com.algaworks.algafood.api.assembler.UsuarioModelAssembler;
+import com.algaworks.algafood.api.model.UsuarioModel;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.service.CadastroRestauranteService;
 
 @RestController
-@RequestMapping("/restaurantes/{restauranteId}/formas-pagamento")
-public class RestauranteFormaPagamentoController {
+@RequestMapping("/restaurantes/{restauranteId}/responsaveis")
+public class RestauranteUsuarioResponsavelController {
 
 	@Autowired
 	private CadastroRestauranteService cadastroRestaurante;
 	
 	@Autowired
-	private FormaPagamentoModelAssembler formaPagamentoModelAssembler;
+	private UsuarioModelAssembler usuarioModelAssembler;
 	
 	@GetMapping
-	public List<FormaPagamentoModel> listar(@PathVariable Long restauranteId) {
+	public List<UsuarioModel> listar(@PathVariable Long restauranteId) {
 		Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
 		
-		return formaPagamentoModelAssembler.toCollectionModel(restaurante.getFormasPagamento());
+		return usuarioModelAssembler.toCollectionModel(restaurante.getResponsaveis());
 	}
 	
-	@DeleteMapping("/{formaPagamentoId}")
+	@DeleteMapping("/{usuarioId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void desassociar(@PathVariable Long restauranteId, @PathVariable Long formaPagamentoId) {
-		cadastroRestaurante.desassociarFormaPagamento(restauranteId, formaPagamentoId);
+	public void desassociar(@PathVariable Long restauranteId, @PathVariable Long usuarioId) {
+		cadastroRestaurante.desassociarResponsavel(restauranteId, usuarioId);
 	}
 	
-	@PutMapping("/{formaPagamentoId}")
+	@PutMapping("/{usuarioId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void associar(@PathVariable Long restauranteId, @PathVariable Long formaPagamentoId) {
-		cadastroRestaurante.associarFormaPagamento(restauranteId, formaPagamentoId);
+	public void associar(@PathVariable Long restauranteId, @PathVariable Long usuarioId) {
+		cadastroRestaurante.associarResponsavel(restauranteId, usuarioId);
 	}
 	
 }

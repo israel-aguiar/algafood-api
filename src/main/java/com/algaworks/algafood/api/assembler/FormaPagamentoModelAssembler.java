@@ -7,7 +7,7 @@ import com.algaworks.algafood.api.model.FormaPagamentoModel;
 import com.algaworks.algafood.domain.model.FormaPagamento;
 
 @Component
-public class FormaPagamentoModelAsslembler
+public class FormaPagamentoModelAssembler
 	extends DomainAssembler<FormaPagamento, FormaPagamentoModel> {
 
 }
