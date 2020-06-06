@@ -17,7 +17,6 @@ import lombok.EqualsAndHashCode;
 @Entity
 public class ItemPedido {
 	
-	
 	@EqualsAndHashCode.Include
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
