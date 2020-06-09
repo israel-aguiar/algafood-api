@@ -27,6 +27,7 @@ public class VendaQueryServiceImpl implements VendaQueryService {
 		var builder = manager.getCriteriaBuilder();
 		var query = builder.createQuery(VendaDiaria.class);
 		var root = query.from(Pedido.class);
+		var predicates = new ArrayList<Predicate>();
 		
 		var functionConvertTzDataCriacao = builder.function(
 				"convert_tz", Date.class, root.get("dataCriacao"),
@@ -38,8 +39,6 @@ public class VendaQueryServiceImpl implements VendaQueryService {
 				functionDateDataCriacao,
 				builder.count(root.get("id")),
 				builder.sum(root.get("valorTotal")));
-		
-		var predicates = new ArrayList<Predicate>();
 		
 		if(filtro.getRestauranteId() != null) {
 			predicates.add(builder.equal(root.get("restaurante"), filtro.getRestauranteId()));
@@ -53,7 +52,7 @@ public class VendaQueryServiceImpl implements VendaQueryService {
 			predicates.add(builder.lessThanOrEqualTo(root.get("dataCriacao"), filtro.getDataCriacaoFim()));
 		}
 		
-		predicates.add(root.get("status").in(StatusPedido.CRIADO, StatusPedido.CANCELADO));
+		predicates.add(root.get("status").in(StatusPedido.CONFIRMADO, StatusPedido.ENTREGUE));
 		
 		query.select(selection);
 		query.groupBy(functionDateDataCriacao);
