@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import com.algaworks.algafood.domain.filter.VendaDiariaFilter;
 import com.algaworks.algafood.domain.model.Pedido;
+import com.algaworks.algafood.domain.model.StatusPedido;
 import com.algaworks.algafood.domain.model.dto.VendaDiaria;
 import com.algaworks.algafood.domain.service.VendaQueryService;
 
@@ -27,7 +28,13 @@ public class VendaQueryServiceImpl implements VendaQueryService {
 		var query = builder.createQuery(VendaDiaria.class);
 		var root = query.from(Pedido.class);
 		
-		var functionDateDataCriacao = builder.function("date", Date.class, root.get("dataCriacao"));
+//		var functionDateDataCriacao = builder.function("date", Date.class, root.get("dataCriacao"));
+
+		var functionConvertTzDataCriacao = builder.function(
+				"convert_tz", Date.class, root.get("dataCriacao"),
+				builder.literal("+00:00"), builder.literal("-03:00"));
+		
+		var functionDateDataCriacao = builder.function("date", Date.class, functionConvertTzDataCriacao);
 
 		var selection = builder.construct(VendaDiaria.class,
 				functionDateDataCriacao,
@@ -48,7 +55,7 @@ public class VendaQueryServiceImpl implements VendaQueryService {
 			predicates.add(builder.lessThanOrEqualTo(root.get("dataCriacao"), filtro.getDataCriacaoFim()));
 		}
 		
-//		predicates.add(root.get("status").in(StatusPedido.CRIADO, StatusPedido.CANCELADO));
+		predicates.add(root.get("status").in(StatusPedido.CRIADO, StatusPedido.CANCELADO));
 		
 		query.select(selection);
 		query.groupBy(functionDateDataCriacao);
