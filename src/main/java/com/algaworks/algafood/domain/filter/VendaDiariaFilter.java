@@ -10,9 +10,8 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class PedidoFilter {
+public class VendaDiariaFilter {
 	
-	private Long clienteId;
 	private Long restauranteId;
 	
 	@DateTimeFormat(iso = ISO.DATE_TIME)
