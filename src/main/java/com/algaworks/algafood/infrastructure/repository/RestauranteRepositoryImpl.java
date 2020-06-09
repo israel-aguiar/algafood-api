@@ -59,8 +59,6 @@ public class RestauranteRepositoryImpl implements RestauranteRepositoryQueries {
 		
 		TypedQuery<Restaurante> query = manager.createQuery(criteria);
 		
-		
-		
 		return query.getResultList();
 	}
 
