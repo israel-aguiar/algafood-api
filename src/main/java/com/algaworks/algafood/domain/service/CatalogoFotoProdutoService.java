@@ -57,4 +57,14 @@ public class CatalogoFotoProdutoService {
 		
 		return fotoProduto;
 	}
+
+	@Transactional
+	public void excluir(Long restauranteId, Long produtoId) {
+		FotoProduto fotoProduto = buscarOuFalhar(restauranteId, produtoId);
+		
+		produtoRepository.delete(fotoProduto);
+		produtoRepository.flush();
+		
+		fotoStorage.remover(fotoProduto.getNomeArquivo());
+	}
 }
