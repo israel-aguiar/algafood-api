@@ -19,6 +19,7 @@
 		<modelmapper.version>2.3.0</modelmapper.version>
 		<squiggly.version>1.3.18</squiggly.version>
 		<jasperreports.version>6.12.2</jasperreports.version>
+		<aws-java-sdk-s3.version>1.11.801</aws-java-sdk-s3.version>
 	</properties>
 
 	<dependencies>
@@ -82,10 +83,26 @@
 			<artifactId>jasperreports</artifactId>
 			<version>${jasperreports.version}</version>
 		</dependency>
+		
 		<dependency>
 			<groupId>net.sf.jasperreports</groupId>
 			<artifactId>jasperreports-functions</artifactId>
 			<version>${jasperreports.version}</version>
+		</dependency>
+		
+		<!-- Sugestão de correção fornecida pelo STS(Eclipse) para remover warning
+		que ocorre ao adicionar	anotação @ConfigurationProperties("algafood.storage")
+		na classe StorageProperties -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk-s3</artifactId>
+			<version>${aws-java-sdk.version}</version>
 		</dependency>
 	</dependencies>
 
