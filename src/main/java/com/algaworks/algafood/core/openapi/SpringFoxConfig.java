@@ -18,7 +18,9 @@ public class SpringFoxConfig implements WebMvcConfigurer{
 	public Docket apiDocket() {
 		return new Docket(DocumentationType.SWAGGER_2)
 				.select()
-				.apis(RequestHandlerSelectors.any())
+				.apis(RequestHandlerSelectors.basePackage("com.algaworks.algafood.api"))
+//				.paths(PathSelectors.any())
+//				.paths(PathSelectors.ant("/restaurantes/*"))
 				.build();
 	}
 	
@@ -29,9 +31,6 @@ public class SpringFoxConfig implements WebMvcConfigurer{
 		
 		registry.addResourceHandler("/webjars/**")
 			.addResourceLocations("classpath:/META-INF/resources/webjars/");
-
-//			.addResourceLocations("classpath:/META/resources/webjars/**")
-			;
 	}
 
 }
