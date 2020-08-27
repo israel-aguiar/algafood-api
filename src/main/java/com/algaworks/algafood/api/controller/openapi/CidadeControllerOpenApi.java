@@ -2,8 +2,6 @@ package com.algaworks.algafood.api.controller.openapi;
 
 import java.util.List;
 
-import org.springframework.web.bind.annotation.GetMapping;
-
 import com.algaworks.algafood.api.exceptionhandler.Problem;
 import com.algaworks.algafood.api.model.CidadeModel;
 import com.algaworks.algafood.api.model.input.CidadeInput;
@@ -18,7 +16,6 @@ import io.swagger.annotations.ApiResponses;
 public interface CidadeControllerOpenApi {
 
 	@ApiOperation("Lista as cidades")
-	@GetMapping
 	public List<CidadeModel> listar();
 	
 	@ApiOperation("Busca uma cidade por ID")
