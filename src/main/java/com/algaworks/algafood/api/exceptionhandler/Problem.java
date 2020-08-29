@@ -44,10 +44,10 @@ public class Problem {
 	@Builder
 	public static class Object {
 		
-		@ApiModelProperty(example = "nome")
+		@ApiModelProperty(example = "preco")
 		private String name;
 		
-		@ApiModelProperty(example = "O nome é obrigatório")
+		@ApiModelProperty(example = "O preço é obrigatório")
 		private String userMessage;
 	}
 	
