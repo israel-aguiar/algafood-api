@@ -16,8 +16,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.algaworks.algafood.api.exceptionhandler.Problem;
 import com.algaworks.algafood.api.model.CozinhaModel;
+import com.algaworks.algafood.api.model.PedidoResumoModel;
 import com.algaworks.algafood.api.openapi.model.CozinhasModelOpenApi;
 import com.algaworks.algafood.api.openapi.model.PageableModelOpenApi;
+import com.algaworks.algafood.api.openapi.model.PedidosResumoModelOpenApi;
 import com.fasterxml.classmate.TypeResolver;
 
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
@@ -66,11 +68,14 @@ public class SpringFoxConfig implements WebMvcConfigurer{
 			.directModelSubstitute(Pageable.class, PageableModelOpenApi.class)
 			.alternateTypeRules(AlternateTypeRules.newRule(typeResolver.resolve(Page.class, CozinhaModel.class),
 					CozinhasModelOpenApi.class))
+			.alternateTypeRules(AlternateTypeRules.newRule(typeResolver.resolve(Page.class, PedidoResumoModel.class),
+					PedidosResumoModelOpenApi.class))
 			.apiInfo(apiInfo())
 			.tags(new Tag("Cidades", "Gerencia as cidades"))
 			.tags(new Tag("Grupos", "Gerencia os grupos"))
 			.tags(new Tag("Cozinhas", "Gerencia as cozinhas"))
 			.tags(new Tag("Formas de pagamento", "Gerencia as formas de pagamento"))
+			.tags(new Tag("Pedidos", "Gerencia os pedidos"))
 			;
 	}
 	
