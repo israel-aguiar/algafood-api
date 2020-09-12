@@ -23,7 +23,9 @@ public interface CidadeControllerOpenApi {
 		@ApiResponse(code = 400, message = "ID da cidade inválido", response = Problem.class),
 		@ApiResponse(code = 404, message = "Cidade não encontrada", response = Problem.class)
 	})
-	public CidadeModel buscar(@ApiParam(value = "ID de uma cidade", example = "1") Long cidadeId);
+	public CidadeModel buscar(
+			@ApiParam(value = "ID de uma cidade", example = "1", required = true)
+			Long cidadeId);
 	
 	@ApiOperation("Cadastra uma cidade")
 	@ApiResponses({
@@ -40,10 +42,10 @@ public interface CidadeControllerOpenApi {
 		@ApiResponse(code = 404, message = "Cidade não encontrada", response = Problem.class)
 	})
 	public CidadeModel atualizar(
-			@ApiParam(value = "ID de uma cidade", example="1")
+			@ApiParam(value = "ID de uma cidade", example="1", required = true)
 			Long cidadeId,
 			
-			@ApiParam(name="corpo", value = "Representação de uma nova cidade com novos dados")
+			@ApiParam(name="corpo", value = "Representação de uma nova cidade com novos dados", required = true)
 			CidadeInput cidadeInput);
 	
 	@ApiOperation("Exclui uma cidade por ID")
@@ -52,6 +54,6 @@ public interface CidadeControllerOpenApi {
 		@ApiResponse(code = 404, message = "Cidade não encontrada", response = Problem.class)
 	})
 	public void remover(
-		@ApiParam(value = "ID de uma cidade", example="1")
+		@ApiParam(value = "ID de uma cidade", example="1", required = true)
 		Long cidadeId);
 }
