@@ -56,7 +56,7 @@ public interface CozinhaControllerOpenApi {
 		@ApiResponse(code = 404, message = "Cozinha não encontrada", response = Problem.class)
 	})
 	public void remover(
-			@ApiParam(value = "ID de uma cidade", example="1", required = true)
+			@ApiParam(value = "ID de uma cozinha", example="1", required = true)
 			Long cozinhaId);
 	
 	
