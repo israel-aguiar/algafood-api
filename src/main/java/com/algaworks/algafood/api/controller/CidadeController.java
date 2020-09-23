@@ -7,6 +7,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -49,8 +50,27 @@ public class CidadeController implements CidadeControllerOpenApi {
 	private CidadeInputDisassenbler cidadeInputDisassenbler;
 	
 	@GetMapping
-	public List<CidadeModel> listar() {
-		return cidadeModelAssembler.toCollectionModel(cidadeRepository.findAll());
+	public CollectionModel<CidadeModel> listar() {
+		List<Cidade> todasCidades = cidadeRepository.findAll();
+		
+		List<CidadeModel> cidadesModel = cidadeModelAssembler.toCollectionModel(todasCidades);
+		
+		cidadesModel.forEach(cidadeModel -> {
+			cidadeModel.add(linkTo(WebMvcLinkBuilder.methodOn(CidadeController.class)
+					.buscar(cidadeModel.getId())).withSelfRel());
+			
+			cidadeModel.add(linkTo(WebMvcLinkBuilder.methodOn(CidadeController.class)
+					.listar()).withRel("cidades"));
+			
+			cidadeModel.getEstado().add(linkTo(WebMvcLinkBuilder.methodOn(EstadoController.class)
+					.buscar(cidadeModel.getEstado().getId())).withSelfRel());
+		});
+		
+		CollectionModel<CidadeModel> cidadesCollectionModel = new CollectionModel<>(cidadesModel);
+		
+		cidadesCollectionModel.add(linkTo(CidadeController.class).withSelfRel());
+		
+		return cidadesCollectionModel;
 	}
 	
 	@GetMapping("/{cidadeId}")
