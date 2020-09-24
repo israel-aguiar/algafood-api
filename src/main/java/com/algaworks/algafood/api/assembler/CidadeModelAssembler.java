@@ -1,12 +1,12 @@
 package com.algaworks.algafood.api.assembler;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
 
 import com.algaworks.algafood.api.controller.CidadeController;
@@ -30,10 +30,10 @@ public class CidadeModelAssembler extends RepresentationModelAssemblerSupport<Ci
 		
 		modelMapper.map(cidade, cidadeModel);
 		
-		cidadeModel.add(linkTo(WebMvcLinkBuilder.methodOn(CidadeController.class)
+		cidadeModel.add(linkTo(methodOn(CidadeController.class)
 				.listar()).withRel("cidades"));
 		
-		cidadeModel.getEstado().add(linkTo(WebMvcLinkBuilder.methodOn(EstadoController.class)
+		cidadeModel.getEstado().add(linkTo(methodOn(EstadoController.class)
 				.buscar(cidadeModel.getEstado().getId())).withSelfRel());
 		
 		return cidadeModel;
