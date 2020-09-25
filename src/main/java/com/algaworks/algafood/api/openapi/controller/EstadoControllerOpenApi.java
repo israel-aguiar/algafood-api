@@ -1,6 +1,6 @@
 package com.algaworks.algafood.api.openapi.controller;
 
-import java.util.List;
+import org.springframework.hateoas.CollectionModel;
 
 import com.algaworks.algafood.api.exceptionhandler.Problem;
 import com.algaworks.algafood.api.model.EstadoModel;
@@ -16,14 +16,14 @@ import io.swagger.annotations.ApiResponses;
 public interface EstadoControllerOpenApi {
 	
 	@ApiOperation("Lista os estados")
-	public List<EstadoModel> listar();
+	CollectionModel<EstadoModel> listar();
 	
 	@ApiOperation("Busca um estado por ID")
 	@ApiResponses({
 		@ApiResponse(code = 400, message = "ID do estado inválido", response = Problem.class),
 		@ApiResponse(code = 404, message = "Estado não encontrado", response = Problem.class)
 	})
-	public EstadoModel buscar(
+	EstadoModel buscar(
 			@ApiParam(value = "ID de um estado", example = "1", required = true)
 			Long estadoId);
 	
@@ -31,7 +31,7 @@ public interface EstadoControllerOpenApi {
 	@ApiResponses({
 		@ApiResponse(code = 201, message = "Estado cadastrado")
 	})
-	public EstadoModel adicionar(
+	EstadoModel adicionar(
 			@ApiParam(name="corpo", value = "Representação de um novo estado", required = true)
 			EstadoInput estadoInput);
 	
@@ -40,7 +40,7 @@ public interface EstadoControllerOpenApi {
 		@ApiResponse(code = 200, message = "Estado atualizado"),
 		@ApiResponse(code = 404, message = "Estado não encontrado", response = Problem.class)
 	})
-	public EstadoModel atualizar(
+	EstadoModel atualizar(
 			@ApiParam(value = "ID de um estado", example="1", required = true)
 			Long estadoId,
 			
@@ -52,7 +52,7 @@ public interface EstadoControllerOpenApi {
 		@ApiResponse(code = 204, message = "Estado excluído"),
 		@ApiResponse(code = 404, message = "Estado não encontrado", response = Problem.class)
 	})
-	public void remover(
+	void remover(
 			@ApiParam(value = "ID de um estado", example="1", required = true)
 			Long estadoId);
 }
