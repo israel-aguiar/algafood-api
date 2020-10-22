@@ -30,10 +30,12 @@ public class RestauranteModelAssembler extends RepresentationModelAssemblerSuppo
 		modelMapper.map(restaurante, restauranteModel);
 
 		restauranteModel.add(algaLinks.linkToRestaurantes("restaurantes"));
+		
+		restauranteModel.add(algaLinks.linkToProdutos(restaurante.getId(), "produtos"));
 
 		restauranteModel.getCozinha().add(algaLinks.linkToCozinha(restaurante.getCozinha().getId()));
 
-		if(restaurante.getEndereco() != null) {
+		if(restaurante.getEndereco() != null && restaurante.getEndereco().getCidade() != null) {
 			restauranteModel.getEndereco().getCidade()
 					.add(algaLinks.linkToCidade(restaurante.getEndereco().getCidade().getId()));
 		}
