@@ -50,10 +50,10 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
 	
 	@GetMapping
 	public CollectionModel<ProdutoModel> listar(@PathVariable Long restauranteId,
-			@RequestParam(required = false) Boolean incluirInativos) {
+			@RequestParam(required = false, defaultValue = "false") Boolean incluirInativos) {
 		Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
 		List<Produto> produtos;
-//		incluirInativos = incluirInativos == null ? false : incluirInativos;
+		
 		if(incluirInativos) {
 			produtos = produtoRepository.findTodosByRestaurante(restaurante);
 		} else {
