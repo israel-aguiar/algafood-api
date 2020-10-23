@@ -79,17 +79,20 @@ public class SpringFoxConfig implements WebMvcConfigurer{
 			.alternateTypeRules(AlternateTypeRules.newRule(typeResolver.resolve(Page.class, PedidoResumoModel.class),
 					PedidosResumoModelOpenApi.class))
 			.apiInfo(apiInfo())
-			.tags(new Tag("Cidades", "Gerencia as cidades"))
-			.tags(new Tag("Grupos", "Gerencia os grupos"))
-			.tags(new Tag("Cozinhas", "Gerencia as cozinhas"))
-			.tags(new Tag("Formas de pagamento", "Gerencia as formas de pagamento"))
-			.tags(new Tag("Pedidos", "Gerencia os pedidos"))
-			.tags(new Tag("Restaurantes", "Gerencia os restaurantes"))
-			.tags(new Tag("Estados", "Gerencia os estados"))
-			.tags(new Tag("Produtos", "Gerencia os produtos de restaurantes"))
-			.tags(new Tag("Usuários", "Gerencia os usuários"))
-			.tags(new Tag("Estatísticas", "Estatísticas da AlgaFood"))
-			;
+			.tags(
+				new Tag("Cidades", "Gerencia as cidades"),
+				new Tag("Grupos", "Gerencia os grupos"),
+				new Tag("Cozinhas", "Gerencia as cozinhas"),
+				new Tag("Formas de pagamento", "Gerencia as formas de pagamento"),
+				new Tag("Pedidos", "Gerencia os pedidos"),
+				new Tag("Restaurantes", "Gerencia os restaurantes"),
+				new Tag("Estados", "Gerencia os estados"),
+				new Tag("Produtos", "Gerencia os produtos de restaurantes"),
+				new Tag("Usuários", "Gerencia os usuários"),
+				new Tag("Estatísticas", "Estatísticas da AlgaFood"),
+				new Tag("Permissões", "Gerencia as permissões")
+				
+				);
 	}
 	
 	private List<ResponseMessage> globalGetResponseMessages() {
