@@ -1,4 +1,4 @@
-package com.algaworks.algafood.api.v1.openapi.controller;
+package com.algaworks.algafood.api.v2.openapi.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -6,8 +6,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
 
 import com.algaworks.algafood.api.exceptionhandler.Problem;
-import com.algaworks.algafood.api.v1.model.CozinhaModel;
-import com.algaworks.algafood.api.v1.model.input.CozinhaInput;
+import com.algaworks.algafood.api.v2.model.CozinhaModelV2;
+import com.algaworks.algafood.api.v2.model.input.CozinhaInputV2;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -16,17 +16,17 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 @Api(tags = "Cozinhas")
-public interface CozinhaControllerOpenApi {
+public interface CozinhaControllerV2OpenApi {
 
 	@ApiOperation("Lista as cozinhas")
-	PagedModel<CozinhaModel> listar(Pageable pageable);
+	PagedModel<CozinhaModelV2> listar(Pageable pageable);
 	
 	@ApiOperation("Busca uma cozinha por ID")
 	@ApiResponses({
 		@ApiResponse(code = 400, message = "ID da cozinha inválido", response = Problem.class),
 		@ApiResponse(code = 404, message = "Cozinha não encontrada", response = Problem.class)
 	})
-	CozinhaModel buscar(
+	CozinhaModelV2 buscar(
 			@ApiParam(value = "ID de uma cozinha", example = "1", required = true)
 			Long cozinhaId);
 	
@@ -34,21 +34,21 @@ public interface CozinhaControllerOpenApi {
 	@ApiResponses({
 		@ApiResponse(code = 201, message = "Cozinha cadastrada")
 	})
-	CozinhaModel adicionar(
+	CozinhaModelV2 adicionar(
 			@ApiParam(name="corpo", value = "Representação de uma nova cozinha", required = true)
-			CozinhaInput cozinhaInput);
+			CozinhaInputV2 cozinhaInput);
 
 	@ApiOperation("Atualiza uma cozinha por ID")
 	@ApiResponses({
 		@ApiResponse(code = 200, message = "Cozinha atualizada"),
 		@ApiResponse(code = 404, message = "Cozinha não encontrada", response = Problem.class)
 	})
-	CozinhaModel atualizar(
+	CozinhaModelV2 atualizar(
 			@ApiParam(value = "ID de uma cozinha", example="1", required = true)
 			Long cozinhaId,
 			
 			@ApiParam(name="corpo", value = "Representação de uma nova cozinha com novos dados", required = true)
-			CozinhaInput cozinhaInput);
+			CozinhaInputV2 cozinhaInput);
 	
 	@ApiOperation("Exclui uma cozinha por ID")
 	@ApiResponses({

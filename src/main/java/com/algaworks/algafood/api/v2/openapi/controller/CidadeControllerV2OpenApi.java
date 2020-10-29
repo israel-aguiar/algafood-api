@@ -1,10 +1,10 @@
-package com.algaworks.algafood.api.v1.openapi.controller;
+package com.algaworks.algafood.api.v2.openapi.controller;
 
 import org.springframework.hateoas.CollectionModel;
 
 import com.algaworks.algafood.api.exceptionhandler.Problem;
-import com.algaworks.algafood.api.v1.model.CidadeModel;
-import com.algaworks.algafood.api.v1.model.input.CidadeInput;
+import com.algaworks.algafood.api.v2.model.CidadeModelV2;
+import com.algaworks.algafood.api.v2.model.input.CidadeInputV2;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -13,17 +13,17 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 @Api(tags = "Cidades")
-public interface CidadeControllerOpenApi {
+public interface CidadeControllerV2OpenApi {
 
 	@ApiOperation("Lista as cidades")
-	CollectionModel<CidadeModel> listar();
+	CollectionModel<CidadeModelV2> listar();
 	
 	@ApiOperation("Busca uma cidade por ID")
 	@ApiResponses({
 		@ApiResponse(code = 400, message = "ID da cidade inválido", response = Problem.class),
 		@ApiResponse(code = 404, message = "Cidade não encontrada", response = Problem.class)
 	})
-	CidadeModel buscar(
+	CidadeModelV2 buscar(
 			@ApiParam(value = "ID de uma cidade", example = "1", required = true)
 			Long cidadeId);
 	
@@ -31,9 +31,9 @@ public interface CidadeControllerOpenApi {
 	@ApiResponses({
 		@ApiResponse(code = 201, message = "Cidade cadastrada")
 	})
-	CidadeModel adicionar(
+	CidadeModelV2 adicionar(
 			@ApiParam(name="corpo", value = "Representação de uma nova cidade")
-			CidadeInput cidadeInput);
+			CidadeInputV2 cidadeInput);
 	
 	
 	@ApiOperation("Atualiza uma cidade por ID")
@@ -41,12 +41,12 @@ public interface CidadeControllerOpenApi {
 		@ApiResponse(code = 200, message = "Cidade atualizada"),
 		@ApiResponse(code = 404, message = "Cidade não encontrada", response = Problem.class)
 	})
-	CidadeModel atualizar(
+	CidadeModelV2 atualizar(
 			@ApiParam(value = "ID de uma cidade", example="1", required = true)
 			Long cidadeId,
 			
 			@ApiParam(name="corpo", value = "Representação de uma nova cidade com novos dados", required = true)
-			CidadeInput cidadeInput);
+			CidadeInputV2 cidadeInput);
 	
 	@ApiOperation("Exclui uma cidade por ID")
 	@ApiResponses({

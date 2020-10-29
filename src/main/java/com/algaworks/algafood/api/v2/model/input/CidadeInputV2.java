@@ -4,10 +4,12 @@ import javax.validation.constraints.NotBlank;
 
 import com.sun.istack.NotNull;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+@ApiModel("CidadeInput")
 @Setter
 @Getter
 public class CidadeInputV2 {
