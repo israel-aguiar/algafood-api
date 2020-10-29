@@ -23,28 +23,8 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.algaworks.algafood.api.exceptionhandler.Problem;
-import com.algaworks.algafood.api.v1.model.CidadeModel;
-import com.algaworks.algafood.api.v1.model.CozinhaModel;
-import com.algaworks.algafood.api.v1.model.EstadoModel;
-import com.algaworks.algafood.api.v1.model.FormaPagamentoModel;
-import com.algaworks.algafood.api.v1.model.GrupoModel;
-import com.algaworks.algafood.api.v1.model.PedidoResumoModel;
-import com.algaworks.algafood.api.v1.model.PermissaoModel;
-import com.algaworks.algafood.api.v1.model.ProdutoModel;
-import com.algaworks.algafood.api.v1.model.RestauranteBasicoModel;
-import com.algaworks.algafood.api.v1.model.UsuarioModel;
-import com.algaworks.algafood.api.v1.openapi.model.CidadesModelOpenApi;
-import com.algaworks.algafood.api.v1.openapi.model.CozinhasModelOpenApi;
-import com.algaworks.algafood.api.v1.openapi.model.EstadosModelOpenApi;
-import com.algaworks.algafood.api.v1.openapi.model.FormasPagamentoModelOpenApi;
-import com.algaworks.algafood.api.v1.openapi.model.GruposModelOpenApi;
 import com.algaworks.algafood.api.v1.openapi.model.LinksModelOpenApi;
 import com.algaworks.algafood.api.v1.openapi.model.PageableModelOpenApi;
-import com.algaworks.algafood.api.v1.openapi.model.PedidosResumoModelOpenApi;
-import com.algaworks.algafood.api.v1.openapi.model.PermissoesModelOpenApi;
-import com.algaworks.algafood.api.v1.openapi.model.ProdutosModelOpenApi;
-import com.algaworks.algafood.api.v1.openapi.model.RestaurantesBasicoModelOpenApi;
-import com.algaworks.algafood.api.v1.openapi.model.UsuariosModelOpenApi;
 import com.algaworks.algafood.api.v2.model.CidadeModelV2;
 import com.algaworks.algafood.api.v2.model.CozinhaModelV2;
 import com.algaworks.algafood.api.v2.openapi.model.CidadesModelV2OpenApi;
@@ -71,92 +51,92 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Import(BeanValidatorPluginsConfiguration.class)
 public class SpringFoxConfig implements WebMvcConfigurer{
 	
-	@Bean
-	public Docket apiDocketV1() {
-		TypeResolver typeResolver = new TypeResolver();
-		return new Docket(DocumentationType.SWAGGER_2)
-				.groupName("V1")
-				.select()
-				.apis(RequestHandlerSelectors.basePackage("com.algaworks.algafood.api"))
-				.paths(PathSelectors.ant("/v1/**"))
-				
-//				.paths(PathSelectors.any())
-//				.paths(PathSelectors.ant("/restaurantes/*"))
-				
-				.build()
-			.useDefaultResponseMessages(false)
-			.globalResponseMessage(RequestMethod.GET, globalGetResponseMessages())
-			.globalResponseMessage(RequestMethod.POST, globalPostResponseMessages())
-			.globalResponseMessage(RequestMethod.PUT, globalPutResponseMessages())
-			.globalResponseMessage(RequestMethod.DELETE, globalDeleteResponseMessages())
-//			.globalOperationParameters(Arrays.asList(
-//						new ParameterBuilder()
-//							.name("campos")
-//							.description("Nomes das propriedades para filtrar na resposta, separados por vírgula")
-//							.parameterType("query")
-//							.modelRef(new ModelRef("spring"))
-//							.build()
-//							))
-			.additionalModels(typeResolver.resolve(Problem.class))
-			.ignoredParameterTypes(ServletWebRequest.class,
-					URL.class, URI.class, URLStreamHandler.class, Resource.class,
-					File.class, InputStream.class)
-			
-			.directModelSubstitute(Pageable.class, PageableModelOpenApi.class)
-			.directModelSubstitute(Links.class, LinksModelOpenApi.class)
-			
-			.alternateTypeRules(AlternateTypeRules.newRule(typeResolver.resolve(PagedModel.class, CozinhaModel.class),
-					CozinhasModelOpenApi.class))
-			
-			.alternateTypeRules(AlternateTypeRules.newRule(typeResolver.resolve(PagedModel.class, PedidoResumoModel.class),
-					PedidosResumoModelOpenApi.class))
-			
-			.alternateTypeRules(AlternateTypeRules.newRule(
-					typeResolver.resolve(CollectionModel.class, FormaPagamentoModel.class),
-					FormasPagamentoModelOpenApi.class))
-			
-			.alternateTypeRules(AlternateTypeRules.newRule(
-					typeResolver.resolve(CollectionModel.class, CidadeModel.class),
-					CidadesModelOpenApi.class))
-			
-			.alternateTypeRules(AlternateTypeRules.newRule(
-					typeResolver.resolve(CollectionModel.class, EstadoModel.class),
-					EstadosModelOpenApi.class))
-			
-			.alternateTypeRules(AlternateTypeRules.newRule(
-					typeResolver.resolve(CollectionModel.class, GrupoModel.class), GruposModelOpenApi.class))
-
-			.alternateTypeRules(
-					AlternateTypeRules.newRule(typeResolver.resolve(CollectionModel.class, PermissaoModel.class),
-							PermissoesModelOpenApi.class))
-			
-			.alternateTypeRules(AlternateTypeRules.newRule(typeResolver.resolve(CollectionModel.class, ProdutoModel.class),
-					ProdutosModelOpenApi.class))
-			
-			.alternateTypeRules(AlternateTypeRules.newRule(
-						typeResolver.resolve(CollectionModel.class, RestauranteBasicoModel.class),
-						RestaurantesBasicoModelOpenApi.class))
-
-				.alternateTypeRules(AlternateTypeRules.newRule(
-						typeResolver.resolve(CollectionModel.class, UsuarioModel.class),
-						UsuariosModelOpenApi.class))
-
-			.apiInfo(apiInfoV1())
-			.tags(
-				new Tag("Cidades", "Gerencia as cidades"),
-				new Tag("Grupos", "Gerencia os grupos"),
-				new Tag("Cozinhas", "Gerencia as cozinhas"),
-				new Tag("Formas de pagamento", "Gerencia as formas de pagamento"),
-				new Tag("Pedidos", "Gerencia os pedidos"),
-				new Tag("Restaurantes", "Gerencia os restaurantes"),
-				new Tag("Estados", "Gerencia os estados"),
-				new Tag("Produtos", "Gerencia os produtos de restaurantes"),
-				new Tag("Usuários", "Gerencia os usuários"),
-				new Tag("Estatísticas", "Estatísticas da AlgaFood"),
-				new Tag("Permissões", "Gerencia as permissões")
-				
-				);
-	}
+//	@Bean
+//	public Docket apiDocketV1() {
+//		TypeResolver typeResolver = new TypeResolver();
+//		return new Docket(DocumentationType.SWAGGER_2)
+//				.groupName("V1")
+//				.select()
+//				.apis(RequestHandlerSelectors.basePackage("com.algaworks.algafood.api"))
+//				.paths(PathSelectors.ant("/v1/**"))
+//				
+////				.paths(PathSelectors.any())
+////				.paths(PathSelectors.ant("/restaurantes/*"))
+//				
+//				.build()
+//			.useDefaultResponseMessages(false)
+//			.globalResponseMessage(RequestMethod.GET, globalGetResponseMessages())
+//			.globalResponseMessage(RequestMethod.POST, globalPostResponseMessages())
+//			.globalResponseMessage(RequestMethod.PUT, globalPutResponseMessages())
+//			.globalResponseMessage(RequestMethod.DELETE, globalDeleteResponseMessages())
+////			.globalOperationParameters(Arrays.asList(
+////						new ParameterBuilder()
+////							.name("campos")
+////							.description("Nomes das propriedades para filtrar na resposta, separados por vírgula")
+////							.parameterType("query")
+////							.modelRef(new ModelRef("spring"))
+////							.build()
+////							))
+//			.additionalModels(typeResolver.resolve(Problem.class))
+//			.ignoredParameterTypes(ServletWebRequest.class,
+//					URL.class, URI.class, URLStreamHandler.class, Resource.class,
+//					File.class, InputStream.class)
+//			
+//			.directModelSubstitute(Pageable.class, PageableModelOpenApi.class)
+//			.directModelSubstitute(Links.class, LinksModelOpenApi.class)
+//			
+//			.alternateTypeRules(AlternateTypeRules.newRule(typeResolver.resolve(PagedModel.class, CozinhaModel.class),
+//					CozinhasModelOpenApi.class))
+//			
+//			.alternateTypeRules(AlternateTypeRules.newRule(typeResolver.resolve(PagedModel.class, PedidoResumoModel.class),
+//					PedidosResumoModelOpenApi.class))
+//			
+//			.alternateTypeRules(AlternateTypeRules.newRule(
+//					typeResolver.resolve(CollectionModel.class, FormaPagamentoModel.class),
+//					FormasPagamentoModelOpenApi.class))
+//			
+//			.alternateTypeRules(AlternateTypeRules.newRule(
+//					typeResolver.resolve(CollectionModel.class, CidadeModel.class),
+//					CidadesModelOpenApi.class))
+//			
+//			.alternateTypeRules(AlternateTypeRules.newRule(
+//					typeResolver.resolve(CollectionModel.class, EstadoModel.class),
+//					EstadosModelOpenApi.class))
+//			
+//			.alternateTypeRules(AlternateTypeRules.newRule(
+//					typeResolver.resolve(CollectionModel.class, GrupoModel.class), GruposModelOpenApi.class))
+//
+//			.alternateTypeRules(
+//					AlternateTypeRules.newRule(typeResolver.resolve(CollectionModel.class, PermissaoModel.class),
+//							PermissoesModelOpenApi.class))
+//			
+//			.alternateTypeRules(AlternateTypeRules.newRule(typeResolver.resolve(CollectionModel.class, ProdutoModel.class),
+//					ProdutosModelOpenApi.class))
+//			
+//			.alternateTypeRules(AlternateTypeRules.newRule(
+//						typeResolver.resolve(CollectionModel.class, RestauranteBasicoModel.class),
+//						RestaurantesBasicoModelOpenApi.class))
+//
+//				.alternateTypeRules(AlternateTypeRules.newRule(
+//						typeResolver.resolve(CollectionModel.class, UsuarioModel.class),
+//						UsuariosModelOpenApi.class))
+//
+//			.apiInfo(apiInfoV1())
+//			.tags(
+//				new Tag("Cidades", "Gerencia as cidades"),
+//				new Tag("Grupos", "Gerencia os grupos"),
+//				new Tag("Cozinhas", "Gerencia as cozinhas"),
+//				new Tag("Formas de pagamento", "Gerencia as formas de pagamento"),
+//				new Tag("Pedidos", "Gerencia os pedidos"),
+//				new Tag("Restaurantes", "Gerencia os restaurantes"),
+//				new Tag("Estados", "Gerencia os estados"),
+//				new Tag("Produtos", "Gerencia os produtos de restaurantes"),
+//				new Tag("Usuários", "Gerencia os usuários"),
+//				new Tag("Estatísticas", "Estatísticas da AlgaFood"),
+//				new Tag("Permissões", "Gerencia as permissões")
+//				
+//				);
+//	}
 	
 	@Bean
 	public Docket apiDocketV2() {
@@ -300,16 +280,16 @@ public class SpringFoxConfig implements WebMvcConfigurer{
 				);
 	}
 	
-	private ApiInfo apiInfoV1() {
-		return new ApiInfoBuilder()
-				.title("Algafood API (Depreciada)")
-				.description("API aberta para clientes e restaurantes. <br>"
-						+ "<strong>Essa versão da API está depreciada e deixará de existir em 31/12/2020.</strong><br>"
-						+ "Use a versão mais atual da API.")
-				.version("1")
-				.contact(new Contact("AlgaWorks", "https://www.algaworks.com", "contato@algaworks.com"))
-				.build();
-	}
+//	private ApiInfo apiInfoV1() {
+//		return new ApiInfoBuilder()
+//				.title("Algafood API (Depreciada)")
+//				.description("API aberta para clientes e restaurantes. <br>"
+//						+ "<strong>Essa versão da API está depreciada e deixará de existir em 31/12/2020.</strong><br>"
+//						+ "Use a versão mais atual da API.")
+//				.version("1")
+//				.contact(new Contact("AlgaWorks", "https://www.algaworks.com", "contato@algaworks.com"))
+//				.build();
+//	}
 	
 	private ApiInfo apiInfoV2() {
 		return new ApiInfoBuilder()
